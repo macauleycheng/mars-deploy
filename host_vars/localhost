@@ -1,0 +1,3 @@
+docker_path: /home/jay/test/docker
+docker_compose_path: /home/jay/test/docker-compose/
+dependencies_path: /home/jay/test/dependencies

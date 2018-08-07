@@ -1,0 +1,8 @@
+docker_path_local: /home/jay/test/docker/
+docker_path_destination: /var/docker
+
+dependencies_path_local: /home/jay/test/dependencies/
+dependencies_path_destination: /var/docker-dependencies
+
+docker_compose_path_local: /home/jay/test/docker-compose/
+docker_compose_path_destination: /usr/local/bin/
