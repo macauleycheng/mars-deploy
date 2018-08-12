@@ -1,0 +1,16 @@
+- name: "Export docker image"
+  hosts: localhost
+  vars:
+   - keepalive_image:
+   - elk_image:
+   - nginx_image:
+   - mars_image:
+  tasks: 
+   - name: "export keepalive"
+     shell: "docker save -o {{ docker_image_path }}/keepalived_2.0.1.tar {{ keepalive_image }}"
+   - name: "export elk"
+     shell: "docker save -o {{ docker_image_path }}/elk_630.tar {{ elk_image }}"
+   - name: "export nginx"
+     shell: "docker save -o {{ docker_image_path }}/nginx_1.14.0.tar {{ nginx_image }}"
+   - name: "export mars"
+     shell: "docker save -o {{ docker_image_path }}/mars_1.13.1.tar {{ mars_image }}"
