@@ -1,14 +1,97 @@
-version: '3'
-services:
-  mysql:
-    image: mysql:5.7.18
-    ports:
-      - "3306:3306"
+version: '2'
+
+services: 
+#  keepalive:
+#    image: osixia/keepalived:1.4.5
+#    container_name: keepalived
+#    environment:
+#      - KEEPALIVED_INTERFACE="enp0s3"
+#      - KEEPALIVED_VIRTUAL_IPS="192.168.1.10"
+#      - KEEPALIVED_PRIORITY =150
+#      - KEEPALIVED_UNICAST_PEERS="192.168.1.42"
+#      - KEEPALIVED_COMMAND_LINE_ARGUMENTS=""
+#    network_mode: host
+
+  nginx:
+    image: nginx:1.14.0
+    build:
+        context: dockerfile/nginx
+    container_name: nginx
+    #expose: 
+    #  - "443/tcp"      
+    #  - "80/tcp"
+    #ports:
+    #  - 80:80
+    #  - 443:443
+    volumes:
+        - ${PWD}/conf/nginx/:/etc/nginx/
+        - ${PWD}/swi:/opt
+    network_mode: host
+    #networks:
+    #  mars_net:
+    #      ipv4_address: 10.1.1.2
+    #links:
+    #  - mars
+    
+
+  elasticsearch:
+    build:
+        context: dockerfile/elasticsearch 
+    container_name: elasticsearch
+    privileged: true
+    network_mode: host
+    #networks:
+    #  mars_net:
+    #      ipv4_address: 10.1.1.4    
+    #ports:
+    #  - 9200:19200
+    #volumes:
+      #- ${PWD}/conf/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      #- ${PWD}/conf/elasticsearch/data:/usr/share/elasticsearch/data:rw
     environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
-  postgres:
-    image: postgres:9.6.2
-    ports:
-      - "5432:5432"
+      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+      network.bind_host: "127.0.0.1"
+      network.publish_host: "192.168.200.65"
+      cluster.name: "marscluster"
+      node.name: "es1"
+
+
+  logstash:
+    build: 
+      context: dockerfile/logstash      
+    container_name: logstash
+    privileged: true
+    #expose:
+    #   - "5514/udp"
+    #   - "6343/tcp"
+    #   - "6343/udp"
+    #   - "25826/udp"
+    #ports:
+    #   - 5514:5514/udp
+    #   - 6343:6343/tcp
+    #   - 6343:6343/udp
+    #   - 25826:25826/udp
+    network_mode: host
+    #networks:
+    #  mars_net:
+    #      ipv4_address: 10.1.1.5
+    #links:
+    #  - elasticsearch
+    volumes:
+      - ${PWD}/conf/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ${PWD}/conf/logstash/pipeline:/usr/share/logstash/pipeline:ro
     environment:
-      POSTGRES_PASSWORD: mysecretpassword
+      LS_JAVA_OPTS: "-Xmx2g -Xms2g"
+    depends_on:
+      - elasticsearch
+
+
+
+#networks:
+#   mars_net:
+#     driver: bridge
+#     ipam:
+#       driver: default
+#       config:
+#       - subnet: 10.1.1.0/24
+#         gateway: 10.1.1.254

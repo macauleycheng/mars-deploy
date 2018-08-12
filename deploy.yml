@@ -23,9 +23,16 @@
     - name: Copy docker-compose yaml to remote
       become: true
       copy:
-        src: /home/jay/ansible/docker-compose.yml
-        dest: /var
-        mode: 'u+x,g+x'
+        src: /home/jay/ansible-mars/docker-compose.yml
+        dest: "{{ remote_project_path }}"
+        mode: 'u=rwX,g=rX,o=rX'
+
+    - name: Copy project config and dockefile
+      become: true
+      copy:
+        src: "./dockerfile"
+        dest: "{{ remote_project_path }}"
+        mode: 'u=rwX,g=rX,o=rX'
 
     - name: Finding dependencies files
       find:
@@ -57,6 +64,6 @@
       become: true
       shell: /usr/local/bin/docker-compose up -d
       args:
-        chdir: /var
+        chdir: "{{ remote_project_path }}"
 
 # rpm -ivh package.rpm
