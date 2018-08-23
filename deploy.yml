@@ -12,6 +12,12 @@
       copy:
         src: "{{ docker_path_local }}"
         dest: "{{ docker_path_destination }}"
+        
+    - name: Copy docker image to remote
+      become: true
+      copy:
+        src: "{{ docker_image_path }}"
+        dest: "{{ docker_image_path_destination }}"
 
     - name: Copy docker-compose package to remote
       become: true
@@ -22,17 +28,19 @@
 
     - name: Copy docker-compose yaml to remote
       become: true
-      copy:
-        src: /home/jay/ansible-mars/docker-compose.yml
-        dest: "{{ remote_project_path }}"
-        mode: 'u=rwX,g=rX,o=rX'
+      template:
+        src: "./docker-compose.yml.j2"
+        dest: "{{ remote_project_path }}docker-compose.yml"
 
     - name: Copy project config and dockefile
       become: true
       copy:
-        src: "./dockerfile"
+        src: "{{ item }}"
         dest: "{{ remote_project_path }}"
         mode: 'u=rwX,g=rX,o=rX'
+      with_items:
+        - ./dockerfile
+        - ./conf
 
     - name: Finding dependencies files
       find:
@@ -59,11 +67,5 @@
         name: "{{ item.path }}"
         state: present
       with_items: "{{ docker_result.files }}"
-
-    - name: Run services in docker
-      become: true
-      shell: /usr/local/bin/docker-compose up -d
-      args:
-        chdir: "{{ remote_project_path }}"
 
 # rpm -ivh package.rpm

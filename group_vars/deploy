@@ -9,3 +9,5 @@ docker_compose_path_destination: /usr/local/bin/
 
 local_project_path:
 remote_project_path: /var/mars/
+
+docker_image_path_destination: /var/docker_image/

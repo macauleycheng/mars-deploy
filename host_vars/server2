@@ -1,0 +1,13 @@
+keepalived_interface: testing
+keepalived_virtual_ips: 
+keepalived_priority: 
+keepalived_unicast_peers: 
+keepalived_command_line_arguments: 
+
+es_java_opts: 
+network_bind_host: 
+network_publish_host: 
+cluster_name: 
+node_name: 
+
+ls_java_opts: 

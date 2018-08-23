@@ -2,20 +2,18 @@ version: '2'
 
 services: 
   keepalive:
-    image: osixia/keepalived:1.4.5
+    image: osixia/keepalived:{{keepalive_version}}
     container_name: keepalived
     environment:
-      - KEEPALIVED_INTERFACE="enp0s3"
-      - KEEPALIVED_VIRTUAL_IPS="192.168.1.10"
-      - KEEPALIVED_PRIORITY =150
-      - KEEPALIVED_UNICAST_PEERS="192.168.1.42"
-      - KEEPALIVED_COMMAND_LINE_ARGUMENTS=""
+      - KEEPALIVED_INTERFACE="{{ keepalived_interface }}"
+      - KEEPALIVED_VIRTUAL_IPS="{{ keepalived_virtual_ips }}"
+      - KEEPALIVED_PRIORITY ={{ keepalived_priority }}
+      - KEEPALIVED_UNICAST_PEERS="{{ keepalived_unicast_peers }}"
+      - KEEPALIVED_COMMAND_LINE_ARGUMENTS="{{ keepalived_command_line_arguments }}"
     network_mode: host
 
   nginx:
     image: nginx:1.14.0
-    build:
-        context: dockerfile/nginx
     container_name: nginx
     #expose: 
     #  - "443/tcp"      
@@ -35,8 +33,7 @@ services:
     
 
   elasticsearch:
-    build:
-        context: dockerfile/elasticsearch 
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:{{elk_version}}
     container_name: elasticsearch
     privileged: true
     network_mode: host
@@ -49,16 +46,15 @@ services:
       #- ${PWD}/conf/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       #- ${PWD}/conf/elasticsearch/data:/usr/share/elasticsearch/data:rw
     environment:
-      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
-      network.bind_host: "127.0.0.1"
-      network.publish_host: "192.168.200.65"
-      cluster.name: "marscluster"
-      node.name: "es1"
+      ES_JAVA_OPTS: "{{ es_java_opts }}"
+      network.bind_host: "{{ network_bind_host }}"
+      network.publish_host: "{{ network_publish_host }}"
+      cluster.name: "{{ cluster_name }}"
+      node.name: "{{ node_name }}"
 
 
   logstash:
-    build: 
-      context: dockerfile/logstash      
+    image: ansiblemars_logstash:{{logstash_version}}
     container_name: logstash
     privileged: true
     #expose:
@@ -81,7 +77,7 @@ services:
       - ${PWD}/conf/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ${PWD}/conf/logstash/pipeline:/usr/share/logstash/pipeline:ro
     environment:
-      LS_JAVA_OPTS: "-Xmx2g -Xms2g"
+      LS_JAVA_OPTS: "{{ ls_java_opts }}"
     depends_on:
       - elasticsearch
 
