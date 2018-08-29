@@ -9,8 +9,8 @@
      shell: docker load -i {{ docker_image_path_destination }}nginx_{{ nginx_version }}.tar
    - name: "import logstash"
      shell: docker load -i {{ docker_image_path_destination }}logstash_{{ logstash_version }}.tar
-  # - name: "import mars"
-   #  shell: docker load -i {{ docker_image_path }}/mars_1.13.1.tar
+   - name: "import mars"
+     shell: docker load -i {{ docker_image_path_destination }}mars_{{ mars_version }}.tar
    - name: Run services in docker
      become: true
      shell: COMPOSE_HTTP_TIMEOUT=30000 DOCKER_CLIENT_TIMEOUT=30000 /usr/local/bin/docker-compose up -d
