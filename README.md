@@ -1,6 +1,7 @@
 # Prepare files at local
 * Setup environment at host_vars/localhost
 > It will download some files to your `docker_path` `docker_compose_path` `dependencies_path`
+
 * Run ``` ansible-playbook local.yml```
 
 * Setup environment at group_vars/all

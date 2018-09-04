@@ -7,7 +7,8 @@ keepalived_command_line_arguments:
 es_java_opts: 
 network_bind_host: 
 network_publish_host: 
-cluster_name: 
+cluster_name:
 node_name: 
 
 ls_java_opts: 
+onos_ip: 
