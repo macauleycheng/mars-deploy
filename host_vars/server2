@@ -1,14 +1,14 @@
-keepalived_interface: testing
-keepalived_virtual_ips: 
-keepalived_priority: 
-keepalived_unicast_peers: 
+keepalived_interface: enp0s3
+keepalived_virtual_ips: 192.168.1.10
+keepalived_priority: 150
+keepalived_unicast_peers: 192.168.1.42
 keepalived_command_line_arguments: 
 
-es_java_opts: 
-network_bind_host: 
-network_publish_host: 
-cluster_name:
-node_name: 
+es_java_opts: -Xmx1024m -Xms1024m
+network_bind_host: 127.0.0.1
+network_publish_host: mars
+cluster_name: marscluster
+node_name: es1
 
-ls_java_opts: 
-onos_ip: 
+ls_java_opts: -Xmx2g -Xms2g
+onos_ip: mars
