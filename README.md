@@ -13,6 +13,7 @@
 * Run ``` ansible-playbook image_export.yml```
 ````diff
 - Notice: Docker image of mars please export to docker_image_path by yourself
+- Ex: docker save mars:test6 -o /opt/prepare/docker_image/mars_test6.tar
 - Notice: if your change the git downlod folder mars-deploy, please also modify the docker image name in image_export.yml. The builded docker imaged name will have folder name as prefix
 ````
 
