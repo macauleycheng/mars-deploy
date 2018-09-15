@@ -1,7 +1,7 @@
 keepalived_interface: enp0s3
-keepalived_virtual_ips: 192.168.56.103
+keepalived_virtual_ips: 192.168.56.101
 keepalived_priority: 150
-keepalived_unicast_peers: 192.168.56.101
+keepalived_unicast_peers: 192.168.56.103
 keepalived_command_line_arguments: 
 
 es_java_opts: -Xmx1024m -Xms1024m
@@ -11,4 +11,4 @@ cluster_name: marscluster
 node_name: es1
 
 ls_java_opts: -Xmx2g -Xms2g
-onos_ip: 192.168.56.103
+onos_ip: 192.168.56.101

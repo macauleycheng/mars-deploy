@@ -26,6 +26,18 @@
         dest: "{{ docker_compose_path_destination }}"
         mode: 'u+x,g+x'
 
+    - name: Check the directory target exists
+      stat:
+        path: "{{ remote_project_path }}"
+      register: stat_dependencies
+
+    - name: Create {{remote_project_path}} path folder
+      file:
+        path: "{{ remote_project_path }}"
+        state: directory
+        mode: u=rwX,g=rX,o=rX
+      when: stat_dependencies.stat.exists == false
+
     - name: Copy docker-compose yaml to remote
       become: true
       template:
@@ -47,6 +59,7 @@
         paths: "{{ dependencies_path_destination }}"
         patterns: "*.rpm"
       register: dependencies_result
+      when: ansible_distribution == 'CentOS'
 
     - name: Install dependencies
       become: true
@@ -54,12 +67,23 @@
         name: "{{ item.path }}"
         state: present
       with_items: "{{ dependencies_result.files }}"
+      when: ansible_distribution == 'CentOS' 
+
+    - name: Install dependencies
+      become: true
+      apt:
+        name: "{{ item.path }}"
+        state: present
+      with_items: "{{ dependencies_result.files }}"
+      when: ansible_distribution == 'Ubuntu'
+   
 
     - name: Finding docker package
       find:
         paths: "{{ docker_path_destination }}"
         patterns: "*.rpm"
       register: docker_result
+      when: ansible_distribution == 'CentOS'
 
     - name: Install docker
       become: true
@@ -67,5 +91,6 @@
         name: "{{ item.path }}"
         state: present
       with_items: "{{ docker_result.files }}"
+      when: ansible_distribution == 'CentOS'
 
 # rpm -ivh package.rpm
