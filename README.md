@@ -7,7 +7,8 @@
 * Setup environment at group_vars/all
 > Input `docker_image_path` `keepalive_version` `elk_version` `nginx_version` `logstash_version` `mars_version` <br> 
 > Build docker image
-* Run ``` docker-compose build
+* Run ``` docker-compose up -d --build '''
+* Run ``` docker-compose down '''
 > Put docker image to tar file
 * Run ``` ansible-playbook image_export.yml```
 ````diff
@@ -22,3 +23,4 @@
 * According hosts create docker-compose config under host_vars directory
 * Run ``` ansible-playbook deploy.yml```
 * Run ``` ansible-playbook image_import.yml```
+
