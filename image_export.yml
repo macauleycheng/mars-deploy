@@ -1,11 +1,23 @@
 - name: "Export docker image"
   hosts: localhost
   tasks: 
+   - name: Check the directory target exists before install docker
+     stat:
+        path: "{{ docker_image_path }}"
+     register: stat_docker
+
+   - name: "Create docker path folder"
+     file:
+        path: "{{ docker_image_path }}"
+        state: directory
+        mode: u=rwX,g=rX,o=rX
+     when: stat_docker.stat.exists == false
+
    - name: "export keepalive"
      shell: "docker save -o {{ docker_image_path }}keepalived_{{ keepalive_version }}.tar osixia/keepalived:{{ keepalive_version }}"
    - name: "export elk"
-     shell: "docker save -o {{ docker_image_path }}elk_{{ elk_version }}.tar docker.elastic.co/elasticsearch/elasticsearch-oss:{{ elk_version }}"
+     shell: "docker save -o {{ docker_image_path }}elk_{{ elk_version }}.tar marsdeploy_elasticsearch:{{ elk_version }}"
    - name: "export nginx"
      shell: "docker save -o {{ docker_image_path }}nginx_{{ nginx_version }}.tar nginx:{{ nginx_version }}"
    - name: "export logstash"
-     shell: "docker save -o {{ docker_image_path }}logstash_{{ logstash_version }}.tar ansiblemars_logstash:{{ logstash_version }}"
+     shell: "docker save -o {{ docker_image_path }}logstash_{{ logstash_version }}.tar marsdeploy_logstash:{{ logstash_version }}"
