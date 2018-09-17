@@ -16,4 +16,4 @@ keepalive_version: 1.4.5
 elk_version: latest
 nginx_version: 1.14.0
 logstash_version: latest
-mars_version: test1
+mars_version: test6

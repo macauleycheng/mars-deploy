@@ -27,7 +27,7 @@
         dest: "{{ docker_compose_path_destination }}"
         mode: 'u+x,g+x'
 
-    - name: Check the directory target exists
+    - name: Check the directory {{remote_project_path}} exists
       become: true
       stat:
         path: "{{ remote_project_path }}"
@@ -44,7 +44,7 @@
     - name: Copy docker-compose yaml to remote
       become: true
       template:
-        src: "./docker-compose.yml.j2"
+        src: "./template/docker-compose.yml.j2"
         dest: "{{ remote_project_path }}docker-compose.yml"
 
     - name: Copy project config and dockefile
@@ -52,11 +52,33 @@
       copy:
         src: "{{ item }}"
         dest: "{{ remote_project_path }}"
-        mode: 'u=rwX,g=rX,o=rX'
+        mode: 'u=rwX,g=rwX,o=rwX'
       with_items:
         - ./dockerfile
         - ./conf
+        - ./public
+        - ./swi
+        
+    - name: Create configuration elasticsearch file from template
+      become: true
+      template:
+        src: "./template/elasticsearch.yml.j2"
+        dest: "{{ remote_project_path }}/conf/elasticsearch/elasticsearch.yml"
 
+    - name: Create configuration keepalived file from template
+      become: true
+      template:
+        src: "./template/keepalived.conf.j2"
+        dest: "{{ remote_project_path }}/conf/keepalived/keepalived.conf.yml"        
+        
+
+    - name: Create configuration mars_collectd.conf file from template
+      become: true
+      template:
+        src: "./template/mars_collectd.conf.j2"
+        dest: "{{ remote_project_path }}/conf/mars/mars_collectd.conf"        
+                
+        
     - name: Finding dependencies files
       find:
         paths: "{{ dependencies_path_destination }}"
@@ -71,15 +93,6 @@
         state: present
       with_items: "{{ dependencies_result.files }}"
       when: ansible_distribution == 'CentOS' 
-
-    - name: Install dependencies
-      become: true
-      apt:
-        name: "{{ item.path }}"
-        state: present
-      with_items: "{{ dependencies_result.files }}"
-      when: ansible_distribution == 'Ubuntu'
-   
 
     - name: Finding docker package
       find:

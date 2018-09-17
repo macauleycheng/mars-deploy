@@ -1,14 +1,15 @@
 Interval 5
 WriteThreads 1
-Hostname "mars"
+Hostname "{{ ansible_nodename }}"
 LoadPlugin network
 LoadPlugin interface
 LoadPlugin load
 LoadPlugin cpu
 LoadPlugin memory
-LoadPlugin disk
+#LoadPlugin disk
 LoadPlugin python
-LoadPlugin logfile
+#LoadPlugin logfile
+LoadPlugin df
 
 <Plugin network>
   <server 127.0.0.1 "25826">
@@ -16,26 +17,30 @@ LoadPlugin logfile
 </Plugin>
 
 <Plugin interface>
-	Interface "enp0s3"
+	Interface "{{ mgmt_nic_name }}"
 	IgnoreSelected false
 </Plugin>
 
-<Plugin disk>
-	Disk "sda1"
-	Disk "sda2"
-#	Disk "sda5"
+<Plugin "df">
+  MountPoint "/"
+  ValuesPercentage true
 </Plugin>
+
+#<Plugin disk>
+#	Disk "sda1"
+#	Disk "sda2"
+#	Disk "sda5"
+#</Plugin>
 
 <Plugin memory>
-	ValuesPercentage false
+  ValuesPercentage true
 </Plugin>
 
-<Plugin logfile>
-	LogLevel "info"
-	File "/var/log/collectd.log"
-	Timestamp true
-</Plugin>
-
+#<Plugin logfile>
+#	LogLevel "info"
+#	File "/var/log/collectd.log"
+#	Timestamp true
+#</Plugin>
 
 <LoadPlugin python>
         Globals true
@@ -53,7 +58,7 @@ LoadPlugin logfile
 	 user "onos"
 	 password "rocks"
 	 disks ["sda1", "sda2"]
-	 networks ["enp0s3"]
+	 networks ["{{ mgmt_nic_name }}"]
 	</Module>
 </Plugin>
 
@@ -61,5 +66,5 @@ LoadPlugin logfile
 <Plugin cpu>
 	ReportByState true
 	ReportByCpu false
-	ValuesPercentage false
+	ValuesPercentage true
 </Plugin>

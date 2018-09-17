@@ -2,14 +2,12 @@ version: '2'
 
 services: 
   keepalive:
-    image: osixia/keepalived:1.4.5
+    image: osixia/keepalived:{{keepalive_version}}
     container_name: keepalived
     network_mode: host
 
   nginx:
     image: nginx:1.14.0
-    build:
-        context: dockerfile/nginx
     container_name: nginx
     volumes:
         - ./conf/nginx/:/etc/nginx/
@@ -18,11 +16,10 @@ services:
         - ./public:/opt/public
     depends_on:
       - mars
-    network_mode: host  
+    network_mode: host
 
   elasticsearch:
-    build:
-        context: dockerfile/elasticsearch 
+    image: marsdeploy_elasticsearch:{{elk_version}}
     container_name: elasticsearch
     privileged: true
     network_mode: host
@@ -31,17 +28,10 @@ services:
       - ./conf/elasticsearch/backup:/mnt/backup:rw
       - ./conf/elasticsearch/data:/usr/share/elasticsearch/data:rw
     environment:
-      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
-    #  network.bind_host: "127.0.0.1"
-    #  network.publish_host: "192.168.200.65"
-    #  cluster.name: "marscluster"
-    #  node.name: "es1"
-    #  path.repo: "['/mnt/bckup']"
-
+      ES_JAVA_OPTS: "{{ es_java_opts }}"
 
   logstash:
-    build: 
-      context: dockerfile/logstash      
+    image: marsdeploy_logstash:{{logstash_version}}
     container_name: logstash
     privileged: true
     network_mode: host
@@ -49,17 +39,17 @@ services:
       - ./conf/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./conf/logstash/pipeline:/usr/share/logstash/pipeline:ro
     environment:
-      LS_JAVA_OPTS: "-Xmx2g -Xms2g"
+      LS_JAVA_OPTS: "{{ ls_java_opts }}"
     depends_on:
       - elasticsearch
 
   mars:
-    image: mars:test4
+    image: mars:{{mars_version}}
     container_name: mars
     network_mode: host
     privileged: true
     environment:
-      ONOS_IP: 192.168.200.65
+      ONOS_IP: {{mgmt_ip}}
     volumes:
       - ./conf/mars/modules:/etc/collectd/modules
       - ./conf/mars/mars_collectd.conf:/etc/collectd/collectd.conf
