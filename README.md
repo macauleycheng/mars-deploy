@@ -7,11 +7,13 @@
 * Setup environment at group_vars/all
 > Input `docker_image_path` `keepalive_version` `elk_version` `nginx_version` `logstash_version` `mars_version` <br> 
 > Build docker image
-* Run ``` docker-compose build
+* Run ``` docker-compose up -d --build '''
+* Run ``` docker-compose down '''
 > Put docker image to tar file
 * Run ``` ansible-playbook image_export.yml```
 ````diff
 - Notice: Docker image of mars please export to docker_image_path by yourself
+- Ex: docker save mars:test6 -o /opt/prepare/docker_image/mars_test6.tar
 - Notice: if your change the git downlod folder mars-deploy, please also modify the docker image name in image_export.yml. The builded docker imaged name will have folder name as prefix
 ````
 
@@ -22,3 +24,4 @@
 * According hosts create docker-compose config under host_vars directory
 * Run ``` ansible-playbook deploy.yml```
 * Run ``` ansible-playbook image_import.yml```
+
