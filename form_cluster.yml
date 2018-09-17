@@ -1,0 +1,15 @@
+- name: "from_cluster"
+  hosts: server1
+  tasks: 
+   - wait_for:
+       host: "{{ mgmt_ip }}"
+       port: 8181
+       state: started
+       delay: 10
+       timeout: 40
+
+   - debug:
+       msg: "cluster IPs {{ cluster }} "  
+       
+   - name: form-cluster
+     shell: docker exec mars bin/onos-form-cluster {{ cluster }}

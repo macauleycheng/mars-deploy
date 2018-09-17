@@ -60,3 +60,4 @@
       shell: "mv `ls {{ docker_compose_path }} | grep docker-compose` docker-compose"
       args:
         chdir: "{{ docker_compose_path }}"
+      ignore_errors: True

@@ -11,3 +11,4 @@ ls_java_opts: -Xmx2g -Xms2g
 mgmt_nic_name: em3
 mgmt_ip: 192.168.200.14
 
+cluster: "192.168.200.14 192.168.200.18"
