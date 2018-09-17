@@ -4,6 +4,8 @@ services:
   keepalive:
     image: osixia/keepalived:{{keepalive_version}}
     container_name: keepalived
+    volumes:
+      - ./conf/keepalived/keepalived.conf:/usr/local/etc/keepalived/keepalived.conf
     network_mode: host
 
   nginx:

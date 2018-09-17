@@ -65,11 +65,22 @@
         src: "./template/elasticsearch.yml.j2"
         dest: "{{ remote_project_path }}/conf/elasticsearch/elasticsearch.yml"
 
+    - name: modify elasticsearch backup and data folder to all priviledge
+      become: true
+      file:
+        path:  "{{ item }}"
+        owner: root
+        group: root
+        mode: 01777
+      with_items:
+        -  "{{ remote_project_path }}/conf/elasticsearch/data"
+        -  "{{ remote_project_path }}/conf/elasticsearch/backup"
+
     - name: Create configuration keepalived file from template
       become: true
       template:
         src: "./template/keepalived.conf.j2"
-        dest: "{{ remote_project_path }}/conf/keepalived/keepalived.conf.yml"        
+        dest: "{{ remote_project_path }}/conf/keepalived/keepalived.conf"        
         
 
     - name: Create configuration mars_collectd.conf file from template
