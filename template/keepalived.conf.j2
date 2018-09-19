@@ -5,10 +5,6 @@ global_defs {
 vrrp_instance VI_1 {
   interface "{{ mgmt_nic_name }}"
 
-  track_interface {
-    "{{ mgmt_nic_name }}"
-  }
-
   state BACKUP
   virtual_router_id 51
   priority {{ keepalived_priority }}
