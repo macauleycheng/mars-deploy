@@ -27,7 +27,7 @@
 * According hosts create docker-compose config under host_vars directory
 * Run ``` ansible-playbook image_deploy.yml```
 * Run ``` ansible-playbook image_import.yml```
-
+* Run ```ansible-playbook form_cluster.yml```
 
 <h1>#One Step</h1>
 * Run ``` ansible-playbook deploy.yml```
