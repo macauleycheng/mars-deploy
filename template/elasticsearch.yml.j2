@@ -4,7 +4,7 @@
 #
 cluster.name: "marscluster"
 node.name: "{{ ansible_nodename }}"
-network.host: 127.0.0.1
+network.host: [127.0.0.1, {{ mgmt_ip }}]
 network.publish_host: {{ mgmt_ip }}
 
 # minimum_master_nodes need to be explicitly set when bound on a public IP
