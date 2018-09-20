@@ -9,7 +9,7 @@
        timeout: 40
 
    - debug:
-       msg: "cluster IPs {{ cluster }} "  
+       msg: "cluster IPs {{ onos_cluster }} "  
        
    - name: form-cluster
-     shell: docker exec mars bin/onos-form-cluster {{ cluster }}
+     shell: docker exec mars bin/onos-form-cluster {{ onos_cluster }}

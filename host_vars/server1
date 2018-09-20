@@ -8,7 +8,8 @@ es_java_opts: -Xmx1024m -Xms1024m
 
 ls_java_opts: -Xmx2g -Xms2g
 
-mgmt_nic_name: em3
+mgmt_nic_name: br1
 mgmt_ip: 192.168.200.14
 
-cluster: "192.168.200.14 192.168.200.18"
+onos_cluster: "192.168.200.14 192.168.200.18"
+elasticsearch_cluster: '"192.168.200.14","192.168.200.18"'
