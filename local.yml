@@ -1,6 +1,28 @@
 - name: Get docker package.
   hosts: localhost
   tasks:
+    - name: Get Mars from gitHub
+      git:
+         repo: 'https://github.com/TeamNocsys/mars.git'
+         dest: ./mars_src
+         clone: yes
+         force: yes
+
+    - name: change /mars_src/tools/dev/bash_profile mode
+      shell: chmod a+x ./mars_src/tools/dev/bash_profile
+
+    - name: set ONOS environment
+      shell: ./mars_src/tools/dev/bash_profile
+
+    - name: delete mars:{{ mars_version }}
+      shell: docker rmi mars:{{ mars_version }}
+      ignore_errors: true
+
+    - name: build mars:{{ mars_version }} docker image
+      shell:  docker build -t mars:{{ mars_version }} .
+      args:
+        chdir: mars_src
+
     - name: Check the directory target exists before install docker
       stat:
         path: "{{ docker_path }}"
@@ -61,3 +83,4 @@
       args:
         chdir: "{{ docker_compose_path }}"
       ignore_errors: True
+
