@@ -2,11 +2,7 @@
   hosts: localhost
   tasks:
     - name: Get Mars from gitHub
-      git:
-         repo: 'https://github.com/TeamNocsys/mars.git'
-         dest: ./mars_src
-         clone: yes
-         force: yes
+      shell: "git clone --depth 1 https://github.com/TeamNocsys/mars.git mars_src"
 
     - name: change /mars_src/tools/dev/bash_profile mode
       shell: chmod a+x ./mars_src/tools/dev/bash_profile
