@@ -10,6 +10,9 @@
 
    - debug:
        msg: "cluster IPs {{ onos_cluster }} "  
-       
+
+   - name: loging to generate ssh-key
+     shell: sshpass -p karaf ssh karaf@{{ mgmt_ip }} ls          
+
    - name: form-cluster
      shell: docker exec mars bin/onos-form-cluster {{ onos_cluster }}
