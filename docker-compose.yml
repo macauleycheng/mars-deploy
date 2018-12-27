@@ -5,6 +5,12 @@ services:
     image: osixia/keepalived:1.4.5
     container_name: keepalived
     network_mode: host
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
+    
 
   nginx:
     image: nginx:1.14.0
@@ -19,6 +25,11 @@ services:
     depends_on:
       - mars
     network_mode: host  
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
 
   elasticsearch:
     build:
@@ -37,6 +48,11 @@ services:
     #  cluster.name: "marscluster"
     #  node.name: "es1"
     #  path.repo: "['/mnt/bckup']"
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
 
 
   logstash:
@@ -52,6 +68,11 @@ services:
       LS_JAVA_OPTS: "-Xmx2g -Xms2g"
     depends_on:
       - elasticsearch
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
 
   mars:
     image: mars:test4
@@ -66,3 +87,8 @@ services:
       - ./download:/root/onos/download
     depends_on:
       - elasticsearch
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
