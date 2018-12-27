@@ -8,6 +8,11 @@ services:
     volumes:
       - ./conf/keepalived/keepalived.conf:/usr/local/etc/keepalived/keepalived.conf
     network_mode: host
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
 
   nginx:
     image: nginx:1.14.0
@@ -20,6 +25,11 @@ services:
     depends_on:
       - mars
     network_mode: host
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
 
   elasticsearch:
     image: marsdeploy_elasticsearch:{{elk_version}}
@@ -32,6 +42,11 @@ services:
       - ./conf/elasticsearch/data:/usr/share/elasticsearch/data:rw
     environment:
       ES_JAVA_OPTS: "{{ es_java_opts }}"
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
 
   logstash:
     image: marsdeploy_logstash:{{logstash_version}}
@@ -45,6 +60,11 @@ services:
       LS_JAVA_OPTS: "{{ ls_java_opts }}"
     depends_on:
       - elasticsearch
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
 
   mars:
     image: mars:{{mars_version}}
@@ -59,3 +79,8 @@ services:
       - ./download:/root/onos/download
     depends_on:
       - elasticsearch
+    logging:
+        driver: "json-file"
+        options:
+           max-size: "10m"
+           max-file: "2"
