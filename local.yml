@@ -1,8 +1,21 @@
 - name: Get docker package.
   hosts: localhost
   tasks:
+    - name: check folder exist
+      stat:
+        path: mars_src
+      register:
+          mars_src_stats
+
     - name: Get Mars from gitHub
-      shell: "git clone --depth 1 https://github.com/TeamNocsys/mars.git mars_src"
+      shell: "git clone -b {{ mars_branch }} --depth 1 https://github.com/TeamNocsys/mars.git mars_src"
+      when: mars_src_stats.stat.exists == false
+
+    - name: Update Mars src folder
+      shell: "git checkout {{ mars_branch }} && git pull"
+      args:
+        chdir: mars_src
+      when: mars_src_stats.stat.exists and mars_src_stats.stat.isdir
 
     - name: change /mars_src/tools/dev/bash_profile mode
       shell: chmod a+x ./mars_src/tools/dev/bash_profile
@@ -15,7 +28,8 @@
       ignore_errors: true
 
     - name: build mars:{{ mars_version }} docker image
-      shell:  docker build -t mars:{{ mars_version }} .
+    #  shell:  docker build -t mars:{{ mars_version }} .
+      shell: ./build_docker.sh
       args:
         chdir: mars_src
 
@@ -67,6 +81,7 @@
       with_items: "{{ dependencies }}"
       when:
         - dependencies is defined
+      ignore_errors: true
 
     - name: Ensure docker-compose is installed and available
       get_url: 
