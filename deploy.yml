@@ -1,6 +1,6 @@
 ---
-- name: parepare local image 
-  include:  local.yml
+#- name: parepare local image 
+#  include:  local.yml
 
 - name: export image to tar file
   include: image_export.yml

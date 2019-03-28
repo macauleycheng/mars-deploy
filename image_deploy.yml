@@ -89,6 +89,17 @@
         src: "./template/mars_collectd.conf.j2"
         dest: "{{ remote_project_path }}/conf/mars/mars_collectd.conf"        
                 
+
+    - name: Copy Switch images
+      become: true
+      copy:
+        src: "{{ item }}"
+        dest: "{{ remote_project_path }}"
+        mode: 'u=rwX,g=rwX,o=rwX'
+      with_items: "{{ switch_images }}"
+      when:
+        - switch_images is defined
+      ignore_errors: true
         
     - name: Finding dependencies files
       find:

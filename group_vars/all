@@ -12,10 +12,16 @@ dependencies:
     - http://mirror.centos.org/centos/7/os//x86_64/Packages/libtool-ltdl-2.4.2-22.el7_3.x86_64.rpm
     - http://mirror.centos.org/centos/7/extras/x86_64/Packages/pigz-2.3.3-1.el7.centos.x86_64.rpm
 
+switch_images:
+    - onie-installer-arm
+    - onie-installer-powerpc
+    - onie-installer-amd64
+    - onie-installer-powerpc-accton_as6700_32x
+
 docker_image_path: /opt/prepare/docker_image/
 keepalive_version: 1.4.5
-elk_version: latest
+elk_version: 6.1.0
 nginx_version: 1.14.0
-logstash_version: latest
+logstash_version: 6.1.0
 mars_version: sia
 mars_branch: sia
