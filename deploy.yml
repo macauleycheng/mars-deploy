@@ -11,5 +11,8 @@
 - name: run the docker service
   include: image_import.yml
 
+- name: wait each server up
+  include: wait_each_server.yml
+
 - name: form Mars cluster
   include: form_cluster.yml

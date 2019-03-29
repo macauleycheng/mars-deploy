@@ -1,18 +1,5 @@
-- name: "from_cluster"
+- name: "form cluster"
   hosts: server1
-  tasks: 
-   - wait_for:
-       host: "{{ mgmt_ip }}"
-       port: 8181
-       state: started
-       delay: 10
-       timeout: 40
-
-   - debug:
-       msg: "cluster IPs {{ onos_cluster }} "  
-
-   - name: loging to generate ssh-key
-     shell: sshpass -p karaf ssh karaf@{{ mgmt_ip }} ls          
-
+  tasks:
    - name: form-cluster
      shell: docker exec mars bin/onos-form-cluster {{ onos_cluster }}
