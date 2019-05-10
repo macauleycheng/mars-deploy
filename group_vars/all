@@ -20,8 +20,11 @@ switch_images:
 
 docker_image_path: /opt/prepare/docker_image/
 keepalive_version: 1.4.5
-elk_version: 6.1.0
+elk_version: latest
 nginx_version: 1.14.0
-logstash_version: 6.1.0
+logstash_version: latest
 mars_version: sia
 mars_branch: sia
+build_mars: true
+
+
