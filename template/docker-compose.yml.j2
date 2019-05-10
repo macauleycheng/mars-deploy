@@ -22,8 +22,8 @@ services:
         - ./swi:/opt/
         - ./download:/opt/download
         - ./public:/opt/public
-    depends_on:
-      - mars
+    #depends_on:
+    #  - mars
     network_mode: host
     logging:
         driver: "json-file"
@@ -38,10 +38,11 @@ services:
     network_mode: host
     volumes:
       - ./conf/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./conf/elasticsearch/jvm.options:/usr/share/elasticsearch/config/jvm.options:ro
       - ./conf/elasticsearch/backup:/mnt/backup:rw
       - ./conf/elasticsearch/data:/usr/share/elasticsearch/data:rw
-    environment:
-      ES_JAVA_OPTS: "{{ es_java_opts }}"
+    #environment:
+    #  ES_JAVA_OPTS: "{{ es_java_opts }}"
     logging:
         driver: "json-file"
         options:
@@ -56,6 +57,7 @@ services:
     volumes:
       - ./conf/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./conf/logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./conf/logstash/types.db:/usr/share/logstash/types.db:ro
     environment:
       LS_JAVA_OPTS: "{{ ls_java_opts }}"
     depends_on:

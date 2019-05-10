@@ -65,6 +65,12 @@
         src: "./template/elasticsearch.yml.j2"
         dest: "{{ remote_project_path }}/conf/elasticsearch/elasticsearch.yml"
 
+    - name: Create configuration elasticsearch java option
+      become: true
+      template:
+        src: "./template/elasticsearch_jvm.options.j2"
+        dest: "{{ remote_project_path }}/conf/elasticsearch/jvm.options"
+
     - name: modify elasticsearch backup and data folder to all priviledge
       become: true
       file:

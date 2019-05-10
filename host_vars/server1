@@ -5,6 +5,9 @@ keepalived_unicast_peers: 192.168.200.38
 keepalived_command_line_arguments: 
 
 es_java_opts: -Xmx1024m -Xms1024m
+es_java_opts_heap_max: Xmx1024m
+es_java_opts_heap_min: Xms1024m
+es_java_opts_stack: Xss1m
 
 ls_java_opts: -Xmx2g -Xms2g
 
